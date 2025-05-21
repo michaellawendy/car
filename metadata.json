@@ -1,0 +1,5 @@
+{
+  "name": "Car Maintenance Tracker",
+  "description": "A visually professional web application to track car maintenance records like oil changes, tire rotations, and other services for multiple vehicles.",
+  "requestFramePermissions": []
+}
