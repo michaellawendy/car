@@ -4,10 +4,7 @@ import { MAINTENANCE_TYPE_OPTIONS } from '../constants';
 import Input from './Input';
 import Select from './Select';
 import Button from './Button';
-// Fix: Import Language enum from context
 import { useLanguage, Language } from '../contexts/LanguageContext';
-// Fix: Remove 'translations' import as it's no longer directly used for typeof after changing casts
-// import { translations } from '../translations'; 
 
 interface MaintenanceRecordFormProps {
   onSubmit: (record: Omit<MaintenanceRecord, 'id' | 'vehicleId'> | MaintenanceRecord) => void;
@@ -63,24 +60,69 @@ const MaintenanceRecordForm: React.FC<MaintenanceRecordFormProps> = ({ onSubmit,
     }
   };
   
-  const statusOptions = Object.values(MaintenanceStatus).map(s => ({ value: s, label: s }));
   const translatedMaintenanceTypeOptions = MAINTENANCE_TYPE_OPTIONS.map(option => ({
     ...option,
-    // Fix: Cast option.label to 'any' to satisfy 't' function's key type, relying on its fallback mechanism.
-    // The '|| option.label' fallback is removed as 't' function already handles this.
     label: t(option.label as any), 
+  }));
+
+  const translatedStatusOptions = Object.values(MaintenanceStatus).map(s => ({ 
+    value: s, 
+    label: t(s as any) // Translate the status label
   }));
 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <Select label={t('maintenanceType')} value={type} onChange={(e) => setType(e.target.value as MaintenanceType)} options={translatedMaintenanceTypeOptions} required />
-      <Input label={t('date')} type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-      <Input label={t('mileage')} type="number" value={mileage} onChange={(e) => setMileage(parseInt(e.target.value) || '')} required placeholder={t('example50000')} />
-      <Input label={t('costOptional')} type="number" value={cost} onChange={(e) => setCost(parseFloat(e.target.value) || '')} placeholder={t('example75_50')} step="0.01" />
-      <Select label={t('status')} value={status} onChange={(e) => setStatus(e.target.value as MaintenanceStatus)} options={statusOptions} required />
-      <Input label={t('nextDueDateOptional')} type="date" value={nextDueDate} onChange={(e) => setNextDueDate(e.target.value)} />
-      <Input label={t('nextDueMileageOptional')} type="number" value={nextDueMileage} onChange={(e) => setNextDueMileage(parseInt(e.target.value) || '')} placeholder={t('example60000')} />
+      <Select 
+        label={t('maintenanceType')} 
+        value={type} 
+        onChange={(e) => setType(e.target.value as MaintenanceType)} 
+        options={translatedMaintenanceTypeOptions} 
+        required 
+      />
+      <Input 
+        label={t('date')} 
+        type="date" 
+        value={date} 
+        onChange={(e) => setDate(e.target.value)} 
+        required 
+      />
+      <Input 
+        label={t('mileage')} 
+        type="number" 
+        value={mileage} 
+        onChange={(e) => setMileage(parseInt(e.target.value) || '')} 
+        required 
+        placeholder={t('example50000')} 
+      />
+      <Input 
+        label={t('costOptional')} 
+        type="number" 
+        value={cost} 
+        onChange={(e) => setCost(parseFloat(e.target.value) || '')} 
+        placeholder={t('example75_50')} 
+        step="0.01" 
+      />
+      <Select 
+        label={t('status')} 
+        value={status} 
+        onChange={(e) => setStatus(e.target.value as MaintenanceStatus)} 
+        options={translatedStatusOptions} // Use translated status options
+        required 
+      />
+      <Input 
+        label={t('nextDueDateOptional')} 
+        type="date" 
+        value={nextDueDate} 
+        onChange={(e) => setNextDueDate(e.target.value)} 
+      />
+      <Input 
+        label={t('nextDueMileageOptional')} 
+        type="number" 
+        value={nextDueMileage} 
+        onChange={(e) => setNextDueMileage(parseInt(e.target.value) || '')} 
+        placeholder={t('example60000')} 
+      />
       <textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
