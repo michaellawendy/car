@@ -1,6 +1,8 @@
-import { Language } from './types'; // Import Language from the shared types.ts
+import { Language, MaintenanceType, MaintenanceStatus } from './types'; // Import Language from the shared types.ts
 
-type TranslationKeys = {
+// Define a more specific type for the keys within each language's translations
+// This will include the general app keys and the string values of the enums
+export type AppTranslationKeys = {
   appName: string;
   myVehicles: string;
   addVehicle: string;
@@ -60,10 +62,17 @@ type TranslationKeys = {
   example75_50: string;
   example60000: string;
   placeholderNotes: string;
+} & {
+  // Add MaintenanceType enum string values as keys
+  [key in MaintenanceType]: string;
+} & {
+  // Add MaintenanceStatus enum string values as keys
+  [key in MaintenanceStatus]: string;
 };
 
+
 type Translations = {
-  [lang in Language]: TranslationKeys;
+  [lang in Language]: AppTranslationKeys;
 };
 
 export const translations: Translations = {
@@ -127,6 +136,23 @@ export const translations: Translations = {
     example75_50: "e.g., 75.50",
     example60000: "e.g., 60000",
     placeholderNotes: "Additional notes (optional)",
+
+    // MaintenanceType Translations
+    [MaintenanceType.OilChange]: "Oil Change",
+    [MaintenanceType.TireRotation]: "Tire Rotation",
+    [MaintenanceType.BrakeInspection]: "Brake Inspection",
+    [MaintenanceType.BatteryCheck]: "Battery Check",
+    [MaintenanceType.AirFilterReplacement]: "Air Filter Replacement",
+    [MaintenanceType.CoolantFlush]: "Coolant Flush",
+    [MaintenanceType.SparkPlugs]: "Spark Plugs Replacement",
+    [MaintenanceType.TimingBelt]: "Timing Belt Replacement",
+    [MaintenanceType.WiperBlades]: "Wiper Blades Replacement",
+    [MaintenanceType.Other]: "Other",
+
+    // MaintenanceStatus Translations
+    [MaintenanceStatus.Upcoming]: "Upcoming",
+    [MaintenanceStatus.Completed]: "Completed",
+    [MaintenanceStatus.Overdue]: "Overdue",
   },
   [Language.AR]: {
     appName: "متتبع صيانة السيارات",
@@ -188,5 +214,22 @@ export const translations: Translations = {
     example75_50: "مثال: 75.50",
     example60000: "مثال: 60000",
     placeholderNotes: "ملاحظات إضافية (اختياري)",
+
+    // MaintenanceType Translations
+    [MaintenanceType.OilChange]: "تغيير زيت المحرك",
+    [MaintenanceType.TireRotation]: "تدوير الإطارات",
+    [MaintenanceType.BrakeInspection]: "فحص الفرامل",
+    [MaintenanceType.BatteryCheck]: "فحص البطارية",
+    [MaintenanceType.AirFilterReplacement]: "استبدال فلتر الهواء",
+    [MaintenanceType.CoolantFlush]: "تغيير سائل التبريد",
+    [MaintenanceType.SparkPlugs]: "استبدال شمعات الإشعال",
+    [MaintenanceType.TimingBelt]: "استبدال حزام التوقيت",
+    [MaintenanceType.WiperBlades]: "استبدال شفرات المساحات",
+    [MaintenanceType.Other]: "أخرى",
+
+    // MaintenanceStatus Translations
+    [MaintenanceStatus.Upcoming]: "قادم",
+    [MaintenanceStatus.Completed]: "مكتمل",
+    [MaintenanceStatus.Overdue]: "متأخر",
   },
 };
