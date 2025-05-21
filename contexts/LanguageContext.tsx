@@ -1,7 +1,8 @@
 
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { translations } from '../translations'; // Adjust path as necessary
+import { translations, AppTranslationKeys } from '../translations'; // Adjust path as necessary, import AppTranslationKeys
 import { Language } from '../types'; // Import Language from the shared types.ts
 
 // Fix: Re-export the Language enum so it can be imported by other modules from this file.
@@ -10,7 +11,7 @@ export { Language };
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: keyof typeof translations[Language.EN], replacements?: Record<string, string | number>) => string;
+  t: (key: keyof AppTranslationKeys, replacements?: Record<string, string | number>) => string; // Use AppTranslationKeys
   dir: 'ltr' | 'rtl';
 }
 
@@ -37,10 +38,10 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     setLanguageState(lang);
   };
 
-  const t = (key: keyof typeof translations[Language.EN], replacements?: Record<string, string | number>): string => {
+  const t = (key: keyof AppTranslationKeys, replacements?: Record<string, string | number>): string => { // Use AppTranslationKeys
     // Fallback to English if translation is missing for the current language
     // Ensure translations and translations[Language.EN] are defined before accessing keys
-    const defaultLangTranslations = translations[Language.EN] || {};
+    const defaultLangTranslations = translations[Language.EN] || {} as AppTranslationKeys; // Cast for safety
     let translation = translations[language]?.[key] || defaultLangTranslations[key] || String(key);
     
     if (replacements) {
